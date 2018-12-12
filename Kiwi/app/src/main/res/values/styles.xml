@@ -1,0 +1,50 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@android:color/holo_green_light</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@android:color/holo_green_light</item>
+    </style>
+
+    <style name="App.Theme" parent="android:style/Theme.NoTitleBar" />
+
+    <style name="NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
+    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <!-- API level 23 미만일 때.. -->
+    <style name="Toolbar" parent="ThemeOverlay.AppCompat.Light">
+        <!-- Toolbar Title Color -->
+        <item name="android:textColorPrimary">@android:color/holo_green_light</item>
+
+        <!-- Toolbar Up Button Color -->
+        <item name="android:textColorSecondary">@android:color/holo_green_light</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- API level 23 이상일 때.. -->
+    <!--
+    <style name="Toolbar" parent="AppTheme">
+        <item name="android:titleTextColor">@android:color/white</item>
+        <item name="android:colorControlNormal">@android:color/white</item>
+    </style>
+    -->
+</resources>

@@ -1,0 +1,26 @@
+<div *ngIf="QnA">
+    <h2 class="page-header"> 제목 : {{QnA.title}} </h2>
+    <h6>내용</h6>
+    <p> {{QnA.content}} </p>
+    <p> {{QnA.reply}} </p>
+    <!-- <ul *ngFor="rep of QnA.reply">
+      <li class="list-group-item">{{rep}}</li>
+    </ul> -->
+</div>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>Username</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tr *ngFor="let list of QnAlist">
+    <th class="tr-group"><div (click)="QnA = list">{{list.title}}</div></th>
+    <th class="tr-group">{{list.username}}</th>
+    <th class="tr-group"><input type="button" value="X" (click)="deleteQnA(list)"></th>
+  </tr>
+</table>
+
+<a [routerLink]="['/qnawrite']" >Write</a>

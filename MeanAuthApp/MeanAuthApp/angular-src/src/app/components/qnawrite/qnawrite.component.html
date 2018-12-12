@@ -1,0 +1,16 @@
+<h2 class="page-header">QnA</h2>
+<div *ngIf="user">
+<form >
+  <div class="form-group">
+    <label>제목</label>
+    <input type="text" class="form-control" [(ngModel)]='title' name="title">
+  </div>
+  <div class="form-group">
+    <label>내용</label>
+    <input type="textarea" class="form-control" [(ngModel)]='content' name="content">
+  </div>
+  <div>
+  <input type="button" class="btn btn-primary" value="Write" (click)="onQnASubmit(user,content,title)">
+  </div>
+</form>
+</div>

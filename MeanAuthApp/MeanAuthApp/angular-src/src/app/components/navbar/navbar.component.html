@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-md navbar-white bg-white justify-content-around" >
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <ul class="navbar-nav navbar-left">
+        <li class="nav-item" >
+            <a class="nav-link" id="lang">Korean</a>
+        </li>
+    </ul>
+
+      <ul class="navbar-nav navbar-center justify-content-around">
+        <li *ngIf="!authService.adminloggedIn()" class="nav-item active">
+          <a class="nav-link" id="category" [routerLink]="['/aboutus']" >키위소개</a>
+        </li>
+        <li *ngIf="!authService.adminloggedIn()" class="nav-item active">
+          <a class="nav-link" id="category" [routerLink]="['/locations']">대여소위치</a>
+        </li>
+        <li *ngIf="authService.adminloggedIn()" class="nav-item active">
+          <a class="nav-link" id="category" [routerLink]="['/adminuserlist']">유저리스트</a>
+        </li>
+        <li *ngIf="authService.adminloggedIn()" class="nav-item active">
+          <a class="nav-link" id="category" [routerLink]="['/adminlocations']">대여소관리</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" class="align-middle" id="home" [routerLink]="['/']">
+          <img src="https://s3.ap-northeast-2.amazonaws.com/elasticbeanstalk-ap-northeast-2-767926874660/KakaoTalk_20181209_174954077.png" width="71" height="71">
+            Kiwi
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" id="category" [routerLink]="['/safety']" >사용방법</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" id="category" [routerLink]="['/kiwiaccess']" >등록방법</a>
+        </li>
+        <!-- <li class="nav-item active">
+            <a class="nav-link" id="category" [routerLink]="['/qna']" >Help</a>
+        </li> -->
+      </ul>
+      <ul class="navbar-nav navbar-right">
+            <li *ngIf="authService.loggedIn()" class="nav-item" [routerLinkActive]="['active']" >
+                <a class="nav-link" id="mini" [routerLink]="['/profile']">사용자정보</a>
+            </li>
+            <li *ngIf="authService.adminloggedIn()" class="nav-item" [routerLinkActive]="['active']" >
+                <a class="nav-link" id="mini" [routerLink]="['/adminprofile']">관리자정보</a>
+            </li>
+            <li *ngIf="!authService.loggedIn() && !authService.adminloggedIn()" class="nav-item" [routerLinkActive]="['active']">
+              <a class="nav-link" id="mini" [routerLink]="['/register']">회원가입</a>
+            </li>
+            <li class="nav-item">
+             <a class="nav-link" id="mini">|</a> 
+            </li>
+            <li *ngIf="!authService.loggedIn() && !authService.adminloggedIn()" class="nav-item" [routerLinkActive]="['active']" >
+              <a class="nav-link" id="mini" [routerLink]="['/login']">로그인</a>
+            </li>
+            <li *ngIf="authService.loggedIn() || authService.adminloggedIn()" class="nav-item" [routerLinkActive]="['active']">
+              <a class="nav-link" id="mini" (click)="onLogoutClick()" href="#">로그아웃</a>
+            </li>
+      </ul>
+    
+</nav>
+

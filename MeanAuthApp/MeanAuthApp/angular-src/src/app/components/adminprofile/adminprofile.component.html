@@ -1,0 +1,30 @@
+<div id="bimage">
+    <div id="content">
+         <h2>관리자 정보</h2>
+    </div> 
+</div>
+<div class="container">
+  <div *ngIf="user">
+  <div id="title"><h3 style="display:table-cell; vertical-align: middle;"> 관리자님의 정보 </h3></div>
+  <table class="table">
+      <tbody>
+          <tr>
+              <th class="tr-group">E - mail</th>
+              <th class="tr-group">{{user.email}}</th>
+          </tr>
+          <tr>
+              <th class="tr-group">License Number</th>
+              <th class="tr-group">{{user.license_num}}</th>
+          </tr>
+          <tr>
+              <th class="tr-group">License Issued</th>
+              <th class="tr-group">{{user.license_issued}}</th>
+          </tr>
+          <tr>
+              <th class="tr-group">License expiration</th>
+              <th class="tr-group">{{user.license_expiration}}</th>
+          </tr>
+      </tbody>
+  </table>
+</div>
+</div>

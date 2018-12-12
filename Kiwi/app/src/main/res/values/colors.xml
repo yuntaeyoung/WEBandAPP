@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        <color name="colorPrimary">#3F51B5</color>
+        <color name="colorPrimaryDark">#303F9F</color>
+        <color name="colorAccent">#FF4081</color>#A0FA14
+    -->
+    <color name="colorPrimary">#0F960F</color>
+    <color name="colorPrimaryDark">#286905</color>
+    <color name="colorAccent">#493F0B</color>
+
+    <color name="login_back">#A7C520</color>
+    <color name="edit_back">#F5F6D4</color>
+    <color name="btn_back">#493F0B</color>
+    <color name="white">#ffffff</color>
+
+    <!-- Retrieved via Resources.getDrawable() and friends. -->
+    <drawable name="black_color">#ff000000</drawable>
+    <drawable name="selected_list_color">#ff32A800</drawable>
+    <drawable name="default_list_color">#ffffffff</drawable>
+
+    <color name="bottom_select">#ABF200</color>
+    <color name="bottom_checked">#87CE00</color>
+    <color name="bottom">#002700</color>
+
+    <color name="title">@android:color/holo_green_light</color>
+    <!--
+    #85DB18
+    #CDE855
+    #F5F6D4
+    #A7C520
+    #493F0B
+
+    #8DBA2C
+    #0E3E18
+    -->
+
+
+
+</resources>

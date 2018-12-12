@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="row">
+      <div class="col-8">
+        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+          <agm-marker 
+            iconUrl="https://s3.ap-northeast-2.amazonaws.com/elasticbeanstalk-ap-northeast-2-767926874660/KakaoTalk_20181129_172618464.png"
+            *ngFor="let m of bikestorage"
+            [latitude]="m.latitude"
+            [longitude]="m.longitude"
+            [markerDraggable]="false">
+    
+            <agm-info-window>   
+            <p>{{m.Storage_name}}</p>
+            <input type="button" value="대여소 자세히 보기" (click)="n = m">
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+      </div>
+        <div class="col-4" >
+          <div id="title">
+              <h5 style="display:table-cell; vertical-align: middle;"> {{n.Storage_name}} </h5>
+          </div>
+            
+          <div id="d_right">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Battery</th>
+                      </tr>        
+                </thead>
+                <tbody>
+                    <tr *ngFor="let list of bike" >
+                        <th class="tr-group" *ngIf="n.uid == list.uid">{{list.name}}</th>
+                        <th class="tr-group" *ngIf="n.uid == list.uid">{{list.battery}}%</th>
+                    </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+    </div>

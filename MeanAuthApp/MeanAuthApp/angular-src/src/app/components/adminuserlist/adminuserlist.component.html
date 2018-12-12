@@ -1,0 +1,22 @@
+<div class="container">
+<table class="table">
+    <thead>
+        <tr>
+            <th>E-mail</th>
+            <th>운전면허 번호</th>
+            <th>운전면허 발행일</th>
+            <th>운전면허 만료일</th>
+            <th>삭제</th>
+          </tr>        
+    </thead>
+    <tbody>
+        <tr *ngFor="let list of userlist" >
+            <th class="tr-group">{{list.email}}</th>
+            <th class="tr-group">{{list.license_num}}</th>
+            <th class="tr-group">{{list.license_issued}}</th>
+            <th class="tr-group">{{list.license_expiration}}</th>
+            <th class="tr-group"><input type="button" value="X" (click)="deleteUser(list)"></th>
+          </tr>
+    </tbody>
+  </table>
+</div>
