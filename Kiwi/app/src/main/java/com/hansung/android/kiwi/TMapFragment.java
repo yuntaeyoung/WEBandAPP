@@ -50,7 +50,7 @@ public class TMapFragment extends Fragment { //마커 이미지
     View view;
     TempOfKiwi tempOfKiwi;
     TMapView tMapView;
-    String apiKey = "f53919d5-456a-4830-890c-e84d651a82de";
+    String apiKey = "f53919d5-456a-4830-890c-e84d651a82de";//Tmap 개발자 홈페이지에서 받은 API KEY
 
     TMapGpsManager tmapgps;
     Button tmapApp_start;
@@ -72,10 +72,11 @@ public class TMapFragment extends Fragment { //마커 이미지
         tMapView = new TMapView(getActivity());
 
         tmapApp_start = view.findViewById(R.id.tmapApp_start);
-
+        //APi KEY를 통해 TMap API 서비스 인증
         tMapView.setSKTMapApiKey(apiKey);
         linearLayoutTmap.addView(tMapView);
 
+        //한성대 위도,경도를 지도 가운데로 잡음(애뮬레이터로 테스트시 gps 사용불가하기에)
         tMapView.setCenterPoint( 127.01036899999997, 37.5817849 );
 
         // 클릭 이벤트 설정
@@ -117,7 +118,7 @@ public class TMapFragment extends Fragment { //마커 이미지
 
 
         tMapView.setIconVisibility(true);//현재위치로 표시될 아이콘을 표시할지 여부를 설정합니다.
-        setGps();
+        setGps(); //GPS를 설정
 
 
         /*
@@ -167,6 +168,7 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
 
         //setMarker();
 
+        //마커 클릭시 화면에 표시되는 풍션뷰를 클릭했을 때의 이벤트 처리
         tMapView.setOnMarkerClickEvent(new TMapView.OnCalloutMarker2ClickCallback() {
 
             @Override
@@ -182,12 +184,12 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
             }
         });
 
-
-        if(car_route_station.equals("default")){
+        //car_rout_station : Tmap APP으로 연동되는 길 안내 서비스를 위한 버튼의 표시여부를 위한 변수
+        if(car_route_station.equals("default")){ //car_route_station의 값이 dafault이면 안내 서비스 버튼이 보이지않음
             tmapApp_start.setVisibility(view.GONE);
-        }else{
+        }else{//car_route_station의 값이 dafault와 다르면 해당 교환소까지의 경로 안내를 위한 서비스 버튼이 보임
             car_st=car_route_station;
-            tmapApp_start.setVisibility(view.VISIBLE);
+            tmapApp_start.setVisibility(view.VISIBLE);//버튼 보임
         }
 
         tmapApp_start.setOnClickListener(new View.OnClickListener() {
@@ -196,12 +198,12 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
                 TMapTapi tMapTapi = new TMapTapi(getContext());
                 boolean isTmapApp = tMapTapi.isTmapApplicationInstalled(); // TMap App 설치 여부
                 Log.d("isTmapApp",isTmapApp+"");
-                if(isTmapApp){
+                if(isTmapApp){//TMap APP이 설치가 되어있으면
                     //tMapTapi.invokeTmap(); // TMap App 실행
                     tMapTapi.invokeRoute(car_st, (float) lon, (float) lat);
                     Log.d("isTmapApp_ttttt",lat+"");
-                }else{
-                    ArrayList result = tMapTapi.getTMapDownUrl(); // TMap App 다운로드
+                }else{//Tmap APP이 설치가 되어있지 않을때
+                    ArrayList result = tMapTapi.getTMapDownUrl(); //URL을 통한 TMap App 다운로드
                     Intent intent1 = new Intent(Intent.ACTION_VIEW,
                             Uri.parse("https://play.google.com/store/apps/details?id=com.skt.tmap.ku"));
                     startActivity(intent1);
@@ -232,6 +234,7 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
             tMapView.setIconVisibility(true);
         }
     */
+    //현재 위치에서 선택한 교환소까지의 경로를 지도 위에 표시하는 함수
     private void path(TMapPoint point1, TMapPoint point2){
 
         TMapData tmapdata = new TMapData();
@@ -242,7 +245,7 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
             }
         });
     }
-
+    //현재 위치의 위도,경도 값을 측정
     private final LocationListener mLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
 
@@ -250,7 +253,7 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
 
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
-
+                //애뮬레이터로 실행하면 0.0이 나와서 한성대로 위치변경
                 if(latitude==0.0&&longitude==0.0){
                     tMapView.setLocationPoint(127.01036899999997, 37.5817849);
                     tMapView.setCenterPoint(127.01036899999997, 37.5817849);
@@ -261,7 +264,7 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
                     Log.d("LocationListener",""+longitude+","+latitude);
                 }
             }
-
+            //보관소 마커를 지도위에 표시해주는 setMarker함수
             setMarker();
 
         }
@@ -276,13 +279,13 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
         }
     };
 
-    public void setGps() {
+    public void setGps() {//사용자의 현재 위치를 수신하기 위한 GPS Setting 함수
         final LocationManager lm = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
         lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, // 등록할 위치제공자(실내에선 NETWORK_PROVIDER 권장)
-                1000, // 통지사이의 최소 시간간격 (miliSecond)
+                6000, // 통지사이의 최소 시간간격 (miliSecond)
                 1, // 통지사이의 최소 변경거리 (m)
                 mLocationListener);
         //setMarker();
@@ -296,9 +299,8 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
         String latitude;
         String longitude;
 
-        //데이터 불러오
+        //BikeStorages에 저장된 퀵보드보관소데이터 불러오기
         for(int i = 0; i < tempOfKiwi.getBikeStorages().size(); i++ ) {
-
 
             StorageName = tempOfKiwi.getBikeStorages().get(i).getStorageName();
             latitude = tempOfKiwi.getBikeStorages().get(i).getLatitude();
@@ -315,10 +317,11 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
                 Log.d("car_route_station:",tmapgps.getLocation()+"");
 
 
-                if(tmapgps.getLocation()==null){
+                if(tmapgps.getLocation()==null){//GPS값이 없을때
                     //127.01036899999997, 37.5817849: 한성대
                     point1 = new TMapPoint(37.5817849, 127.01036899999997);
                 }else if(tmapgps.getLocation().getLongitude()==0.0&&tmapgps.getLocation().getLatitude()==0.0){
+                    //에뮬레이터로 실행하면 값이 0.0 나옴
                     point1 = new TMapPoint(37.5817849, 127.01036899999997);
                 }else{
                     point1 = tmapgps.getLocation();
@@ -337,19 +340,20 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
 
            // Log.d("포인트2", String.valueOf(point2));
 
-            TMapPoint tMapPoint = new TMapPoint(parseDouble(latitude), parseDouble(longitude)); //gps로 받아온 위도경도 저장
+            TMapPoint tMapPoint = new TMapPoint(parseDouble(latitude), parseDouble(longitude)); //gps로 받아온 위도경도 저장하고
+                                                                                                //보관소마커생성
             MarkerOverlay marker1 = new MarkerOverlay(getContext(), StorageName, "배터리 잔량");//공기계GPS가 불량이어서
                                                                                             //위치값을 잘 못넘기나?
                                                                                 //마크오버레이값으로 null값이 찍힌다.
 
-            String strID = StorageName; //교환소이름 저장
+            String strID = StorageName; //보관소 이름으로 마커 아이디지정
 
-            marker1.setID(strID); //저장된 이름으로 머커찍기
+            marker1.setID(strID); //마커 아이콘 지정
 
             marker1.setIcon(BitmapFactory.decodeResource(getResources(), R.drawable.kiwi_marker_small)); //마커이미지
-            marker1.setTMapPoint(tMapPoint); //저장된 위도경도로 마커 찎기
+            marker1.setTMapPoint(tMapPoint); //저장된 위도경도 값으로 마커를 생성
 
-            tMapView.addMarkerItem2(strID, marker1);
+            tMapView.addMarkerItem2(strID, marker1);//지도에 생성한 머커를 추가
 
             Log.d("i:", i + "");
             Log.d("Station_name:", StorageName + "");

@@ -76,13 +76,13 @@ public class BikeInfoActivity extends AppCompatActivity {
         });
 
         route=findViewById(R.id.route);
-
         route.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                car_route_num=1;
+                car_route_num=1; //네비게이션을 위한 Tmap App으로 연동되는 버튼을 표시해주기 위한 변
 
+                //NaviActivity로 화면이 전환되어 지도가 화면에 출력됨
                 Intent intent = new Intent(BikeInfoActivity.this, NaviActivity.class);
                 intent.putExtra("station",station);
                 startActivity(intent);
@@ -101,6 +101,7 @@ public class BikeInfoActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            //toolbar의 back키 눌렀을때 동작 : NaviActivity 화면으로 전환
             case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
                 finish();
                 return true;
@@ -108,17 +109,17 @@ public class BikeInfoActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    //배터 현환을 보여주는 카드
     private void cardEvent(GridLayout Grid){
         for(int i=0; i<Grid.getChildCount(); i++){
-
+            //배터리 정보를 카드뷰 형태로 진
             GridView cardView = (GridView)Grid.getChildAt(i);
             final int num=i;
             cardView.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View view) {
-                    //Toast.makeText(BikeInfoActivity.this, "click" + num, Toast.LENGTH_LONG).show();
+                    Toast.makeText(BikeInfoActivity.this, "click" + num, Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -128,19 +129,14 @@ public class BikeInfoActivity extends AppCompatActivity {
     private void GetInfo(String station){
 
         Table_num=3;
-        //  retrofit=new Retrofit.Builder().baseUrl(ROOT_URL).build();
-        //apiService=retrofit.create(ApiService.class);
         mArrayList = new ArrayList<>();
-
-
         uid = station;
         Log.d("바이크인포uid=station",uid);
         String BikesName;
         String Battery;
         String Reserve;
 
-
-        //데이터 불러오
+        //특정 보관소를 누르면 해당 보관소에 대한 퀵보드 정보를 가져오기
         for (int j = 0; j < tempofKiwi.getBikeStorages().size(); j++) {
             if (uid.equals(tempofKiwi.getBikeStorages().get(j).getStorageName())) {
                 Log.d("uid == 겟바이크스토레지?", tempofKiwi.getBikeStorages().get(j).getStorageName());
@@ -161,14 +157,14 @@ public class BikeInfoActivity extends AppCompatActivity {
                         Log.d("바이크 배터리량", Battery);
                         Log.d("예약가능유무", Reserve);
 
-                        HashMap<String, String> hashMap = new HashMap<>();
-
-                        hashMap_id.put(String.valueOf(j), uid);
+                        //배터리 정보를 HasMap에 저장
+                       HashMap<String, String> hashMap = new HashMap<>();
+                       hashMap_id.put(String.valueOf(j), uid);
                         Log.d("String.valueOf(j)",String.valueOf(j));
                         Log.d("유아이디",uid);
                         hashMap.put(TAG_BatteryLevel, Battery + "%");
 
-
+                        //DB 저장이 true와 false로 되어있으므로 출려되는 것을 바꿔
                         if (Reserve.equals("true")) {
                             hashMap.put(TAG_Reservation, "예약가능");
                         } else if (Reserve.equals("false")) {
@@ -176,6 +172,7 @@ public class BikeInfoActivity extends AppCompatActivity {
                         }
 
                         Log.v("Test2", hashMap.toString());
+                        //HasMap에 저장한 정보를 배터리 정보 배열에 저
                         mArrayList.add(hashMap);
                         Log.d("에드해쉬맵", String.valueOf(hashMap));
                     }
@@ -195,7 +192,7 @@ public class BikeInfoActivity extends AppCompatActivity {
     }
 
 
-
+    //카드뷰로 화면에 출력한 퀵보드 정보의 위치값으로 해당 배터리의 id 정보를 획득가
     private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -213,7 +210,7 @@ public class BikeInfoActivity extends AppCompatActivity {
         }
     };
 
-    void show(final String st){
+    void show(final String st){//예약하기를 눌렀을 때 화면에 표시되는 alert box
 
         final String uid=st;
         Log.d("show st값",st);
@@ -224,6 +221,7 @@ public class BikeInfoActivity extends AppCompatActivity {
         builder.setPositiveButton("예",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        //배터리 예약을 위해 선택한 배터리의 uid값을 reservation 함수로 전달
                         //Toast.makeText(getApplicationContext(),"예를 선택했습니다.",Toast.LENGTH_LONG).show();
                         //Toast.makeText(getApplicationContext(),uid,Toast.LENGTH_LONG).show();
                         reservation(uid);
@@ -243,9 +241,8 @@ public class BikeInfoActivity extends AppCompatActivity {
         Log.d("reservation st값", st);
         Toast.makeText(getApplicationContext(),uid,Toast.LENGTH_LONG).show();
 
-
-
-
+        //해당 email이 예약한 바이크와 함께 저장되도록
+        //서버에 예약한 바이크 uid를 통해 해당 바이크의 예약정보를 예약불가로 변경
 //
 //        Call<info> call=apiService.BattReservation(uid);
 //        call.enqueue(new retrofit2.Callback<info>() {

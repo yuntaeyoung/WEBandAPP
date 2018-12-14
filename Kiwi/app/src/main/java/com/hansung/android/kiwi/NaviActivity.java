@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.Constants;
 import com.anjlab.android.iab.v3.SkuDetails;
@@ -36,17 +37,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.AccessController;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.zip.Inflater;
 
+import static com.hansung.android.kiwi.LoginPostRequest.temp;
 import static com.hansung.android.kiwi.MyPageGetData.TAG_name;
 import static com.hansung.android.kiwi.MyPageGetData.TAG_email;
-import static java.security.AccessController.getContext;
+
+import static com.hansung.android.kiwi.WalletFragment.purchaseDialog;
 
 public class NaviActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener/*BillingProcessor.IBillingHandler*/ {
+        implements NavigationView.OnNavigationItemSelectedListener,BillingProcessor.IBillingHandler{
+    TempOfKiwi tempofKiwi;
 
     public static String car_route_station = "default";
     public static int car_route_num = 0;
@@ -61,12 +68,10 @@ public class NaviActivity extends AppCompatActivity
 
 
     private PurchaseHeartsAdapter skusAdapter;
-    private BillingProcessor bp;
-    public static ArrayList<SkuDetails> products;
-    private MaterialDialog purchaseDialog; // 버전 안맞아?
+    public BillingProcessor bp;
 
 
-
+    public static ArrayList<SkuDetails> products = new ArrayList<>();
 
 
     @Override
@@ -74,7 +79,7 @@ public class NaviActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navi);
 
-      //  bp = new BillingProcessor(this, key, this); //라이센스 키입력
+        bp = new BillingProcessor(this, key, this); //라이센스 키입력
 
 
 
@@ -228,37 +233,106 @@ public class NaviActivity extends AppCompatActivity
         return true;
     }
 
-    public void purchaseProduct(final String productId) {
-        if (bp.isPurchased(productId)) {
-            bp.consumePurchase(productId);
+
+
+
+
+
+
+
+    @Override
+    public void onBillingInitialized() {
+
+        SkuDetails product;
+        product = bp.getPurchaseListingDetails("onehour_ticket"); //1시간이용권등록
+
+
+        products.add(product);
+        Log.d("한시간프로덕스id",products.get(0).productId);
+        Log.d("한시간프로덕스",products.toString());
+
+        product = bp.getPurchaseListingDetails("twohour_ticket");
+        products.add(product);
+        Log.d("두시간프로덕시id",products.get(1).productId);
+        Log.d("두시간프로덕스",products.toString());
+
+
+
+//         Sort ascending order
+//        Collections.sort(products, new Comparator<SkuDetails>() {
+//            @Override
+//            public int compare(SkuDetails o1, SkuDetails o2) {
+//                if (o1.priceLong > o2.priceLong) {
+//                    return 1;
+//                } else if (o1.priceLong < o2.priceLong) {
+//                    return -1;
+//                } else return 0;
+//            }
+//        });
+
+        // 결제 아이템 다이얼로그 설정
+        skusAdapter = new PurchaseHeartsAdapter(this);
+        View purchaseView = getLayoutInflater().inflate(R.layout.layout_dialog_heartstore, null);
+        ListView lvSkus = purchaseView.findViewById(R.id.lv_skus);
+        lvSkus.setAdapter(skusAdapter);
+
+        purchaseDialog = new MaterialDialog.Builder(this) //getContext()와 같다
+                .customView(purchaseView, false)
+                .negativeText("취소")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+  }
+                })
+                .build();
+        skusAdapter.update(products);
         }
+
+    public void purchaseProduct(final String productId) {//어댑터 클래스에서 productId를 넘겨받고 결제성공하면 onProductPurchased
+        //취소하면 onBillingError
+        Log.d("purchase메소드실행전",productId);
+        if (bp.isPurchased(productId)) {//이미 구매한 항목이있으면
+            Log.d("purchaseProduct메소드", String.valueOf(bp.isPurchased(productId)));
+            bp.consumePurchase(productId);//즉각소비 하고 true 리턴
+            Log.d("컨슈머퍼체이스", String.valueOf(bp.consumePurchase(productId)));
+            }
         bp.purchase(this, productId);
+        Log.d("purchase", String.valueOf(bp.purchase(this,productId))); //최종구매누르면 나옴 지금은 *오류 요청하신 항목은 구매할 수 없습니다.
+
+
     }
 
 
 
 
-    //@Override
+
+
+    @Override
     public void onProductPurchased(@NonNull String productId, @Nullable TransactionDetails details) {
 // 구매한 아이템 정보
+        Log.d("onProductPurchased",productId);
         SkuDetails sku = bp.getPurchaseListingDetails(productId);
+        Log.d("스쿠값",sku.toString());
         // 하트 100개 구매에 성공하였습니다! 메세지 띄우기
         String purchaseMessage = sku.title + getString(R.string.purchase_succeed);
-      //  Common.showMessage(this, getCurrentFocus(), purchaseMessage);
+        //  Common.showMessage(this, getCurrentFocus(), purchaseMessage);
 
         // 구매 처리
         int amount = 0;
         try {
             // 사용자의 하트 100개를 추가
             amount = Integer.parseInt(productId.substring(1));
-        //    userStore.purchaseHearts(amount, tvNavigationHearts);
+            // userStore.purchaseHearts(amount, tvNavigationHearts);
         } catch (Exception e) {
             Toast.makeText(this, R.string.purchase_error, Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
     }
 
-   // @Override
+
+
+    @Override
     public void onBillingError(int errorCode, @Nullable Throwable error) {
         if (errorCode != Constants.BILLING_RESPONSE_RESULT_USER_CANCELED) {
             String errorMessage = getString(R.string.purchase_error) + " (" + errorCode + ")";
@@ -266,71 +340,22 @@ public class NaviActivity extends AppCompatActivity
         }
     }
 
-   // @Override
+    @Override
     public void onPurchaseHistoryRestored() {//??
 
     }
 
-   // @Override
-    public void onPurchaseHistoryRestored(int errorCode) {
-        if (errorCode != Constants.BILLING_RESPONSE_RESULT_USER_CANCELED) {
-            String errorMessage = getString(R.string.purchase_error) + " (" + errorCode + ")";
-            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
-        }
-
-
-    }
-
-
-
-
-
-
 //    @Override
-//    public void onBillingInitialized() {
-//
-//        SkuDetails product;
-//        product = bp.getPurchaseListingDetails("onehour_ticket"); //1시간이용권등록
-//        Log.d("프로덕트1", String.valueOf(product));
-//        products.add(product);
-//
-//        bp.getPurchaseListingDetails("twohour_ticket"); //2시간이용권등록
-//        Log.d("프로덕트2", String.valueOf(product));
-//        products.add(product);
+//    public void onPurchaseHistoryRestored(int errorCode) {//IBillingHandler 클래스에 파라미터에 빈값받게 선언되는데?
+//        if (errorCode != Constants.BILLING_RESPONSE_RESULT_USER_CANCELED) {
+//            String errorMessage = getString(R.string.purchase_error) + " (" + errorCode + ")";
+//            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+//        }
 //
 //
-//
-////         Sort ascending order
-////        Collections.sort(products, new Comparator<SkuDetails>() {
-////            @Override
-////            public int compare(SkuDetails o1, SkuDetails o2) {
-////                if (o1.priceLong > o2.priceLong) {
-////                    return 1;
-////                } else if (o1.priceLong < o2.priceLong) {
-////                    return -1;
-////                } else return 0;
-////            }
-////        });
-//
-//        // 결제 아이템 다이얼로그 설정
-//        skusAdapter = new PurchaseHeartsAdapter(this);
-//        View purchaseView = getLayoutInflater().inflate(R.layout.layout_dialog_heartstore, null);
-//        ListView lvSkus = purchaseView.findViewById(R.id.lv_skus);
-//        lvSkus.setAdapter(skusAdapter);
-//
-//        purchaseDialog = new MaterialDialog.Builder(this) //getContext()와 같다
-//                .customView(purchaseView, false)
-//                .negativeText("취소")
-//                .onNegative(new MaterialDialog.SingleButtonCallback() {
-//                    @Override
-//                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                        dialog.dismiss();
-//                    }
-//                })
-//                .build();
-//
-//        skusAdapter.update(products);
+//    }
 
-  //  }
+
+
 
 }

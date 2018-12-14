@@ -1,5 +1,7 @@
 package com.hansung.android.kiwi;
 
+import com.anjlab.android.iab.v3.SkuDetails;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -30,5 +32,24 @@ public class TempOfKiwi {
     }
 
     public static ArrayList<Bikes> getBikes() {return bikes;};
+
+
+    public static ArrayList<SkuDetails> skuDetails = null;
+
+    public static void setSkuDetails(ArrayList<SkuDetails> skuDetails){
+        TempOfKiwi.skuDetails = skuDetails;
+    }
+
+    public static ArrayList<SkuDetails> getSkuDetails() {return skuDetails;}
+
+    public static SkuDetails product;
+
+    public static void setProduct(SkuDetails product){
+        TempOfKiwi.product =product;
+    }
+
+    public static SkuDetails getProduct() {return product;}
+
+
 
 }

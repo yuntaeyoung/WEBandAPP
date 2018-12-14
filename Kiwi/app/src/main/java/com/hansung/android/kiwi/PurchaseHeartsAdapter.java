@@ -2,6 +2,9 @@ package com.hansung.android.kiwi;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import com.hansung.android.kiwi.WalletFragment;
 
 
 import com.anjlab.android.iab.v3.SkuDetails;
+import com.anjlab.android.iab.v3.BillingProcessor;
 
 
 import java.util.ArrayList;
@@ -27,6 +31,15 @@ public class PurchaseHeartsAdapter extends BaseAdapter {
     private ArrayList<SkuDetails> products;
     //private InAppPurchaseItems items;
     private NaviActivity activity;
+
+   // TempOfKiwi product;
+
+    private SkuDetails product;
+
+//    public NaviActivity(Activity activity) {
+//        this.activity = activity;
+//    }
+
 
     public PurchaseHeartsAdapter(Activity activity) {
         this.activity = (NaviActivity) activity;
@@ -67,18 +80,28 @@ public class PurchaseHeartsAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-     //   holder.ivIcon.setImageDrawable(context.getResources().getDrawable(items.getDrawable(sku.productId)));
+      // holder.ivIcon.setImageDrawable(context.getResources().getDrawable(items.getDrawable(sku.productId)));
         holder.tvLabel.setText(sku.title.replaceAll("\\(.*\\)", ""));
         holder.tvPrice.setText(sku.priceText);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-      //          activity.purchaseProduct(sku.productId);
+                Log.d("어댑터클래스-아이템구매버튼", view.toString());
+                activity.purchaseProduct(sku.productId); //NaviActivitiy클래스에 purchaseProduct에 프로덕트id를넘김
+                
+                //Intent intent = new Intent()
+
+                Log.d("네비액티비티로purchaseProduct",sku.productId);
             }
         });
 
+        Log.d("겟뷰 리턴값", String.valueOf(view));//월넷프래그먼트의 구매하기 누르면 뜸
         return view;
+
     }
+
+
+
 
     public void update(ArrayList<SkuDetails> products) {
         if (products != null) {
