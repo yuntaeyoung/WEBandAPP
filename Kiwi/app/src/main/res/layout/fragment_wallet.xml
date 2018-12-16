@@ -6,11 +6,14 @@
     tools:context=".WalletFragment">
 
     <!-- TODO: Update blank fragment layout -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity=""
-        android:src="@drawable/kiwi_logo" />
+        android:src="@drawable/bike" />
 
     <Button
         android:id="@+id/btn_purchase_heart"
@@ -21,6 +24,20 @@
         android:text="티켓 구매"
         android:textSize="40sp" />
 
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/kiwi_wallet" />
+
+
+    </LinearLayout>
 
 
 </LinearLayout>

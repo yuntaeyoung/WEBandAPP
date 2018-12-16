@@ -175,12 +175,4 @@ public class BikeInfoGetData extends GetRequest {
         return output;
     }
 
-
-
-
-
-
-
-
-
 }

@@ -12,6 +12,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -83,13 +84,13 @@ public class TMapFragment extends Fragment { //마커 이미지
         tMapView.setOnClickListenerCallBack(new TMapView.OnClickListenerCallback() {
             @Override
             public boolean onPressEvent(ArrayList arrayList, ArrayList arrayList1, TMapPoint tMapPoint, PointF pointF) {
-                Toast.makeText(getContext(), "onPress~!", Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(getContext(), "onPress~!", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
             @Override
             public boolean onPressUpEvent(ArrayList arrayList, ArrayList arrayList1, TMapPoint tMapPoint, PointF pointF) {
-                Toast.makeText(getContext(), "onPressUp~!", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(getContext(), "onPressUp~!", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -98,7 +99,7 @@ public class TMapFragment extends Fragment { //마커 이미지
         tMapView.setOnLongClickListenerCallback(new TMapView.OnLongClickListenerCallback() {
             @Override
             public void onLongPressEvent(ArrayList arrayList, ArrayList arrayList1, TMapPoint tMapPoint) {
-                Toast.makeText(getContext(), "onLongPress~!", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getContext(), "onLongPress~!", Toast.LENGTH_SHORT).show();
             }
         });
 /*
@@ -299,8 +300,9 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
         String latitude;
         String longitude;
 
+
         //BikeStorages에 저장된 퀵보드보관소데이터 불러오기
-        for(int i = 0; i < tempOfKiwi.getBikeStorages().size(); i++ ) {
+        for (int i = 0; i < tempOfKiwi.getBikeStorages().size(); i++) {
 
             StorageName = tempOfKiwi.getBikeStorages().get(i).getStorageName();
             latitude = tempOfKiwi.getBikeStorages().get(i).getLatitude();
@@ -312,52 +314,72 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
 
             Log.v("place_car_route_station", car_route_station + "");
 
-            if(car_route_station.equals(StorageName)){//배터리 정보에서 길안내 누르면 지도로나와서 길찍음
-                TMapPoint point1;
-                Log.d("car_route_station:",tmapgps.getLocation()+"");
+
+                if (car_route_station.equals(StorageName)) {//배터리 정보에서 길안내 누르면 지도로나와서 길찍음
+                    TMapPoint point1;
+                    Log.d("car_route_station:", tmapgps.getLocation() + "");
 
 
-                if(tmapgps.getLocation()==null){//GPS값이 없을때
-                    //127.01036899999997, 37.5817849: 한성대
-                    point1 = new TMapPoint(37.5817849, 127.01036899999997);
-                }else if(tmapgps.getLocation().getLongitude()==0.0&&tmapgps.getLocation().getLatitude()==0.0){
-                    //에뮬레이터로 실행하면 값이 0.0 나옴
-                    point1 = new TMapPoint(37.5817849, 127.01036899999997);
-                }else{
-                    point1 = tmapgps.getLocation();
+                    if (tmapgps.getLocation() == null) {//GPS값이 없을때
+                        //127.01036899999997, 37.5817849: 한성대
+                        point1 = new TMapPoint(37.5817849, 127.01036899999997);
+                    } else if (tmapgps.getLocation().getLongitude() == 0.0 && tmapgps.getLocation().getLatitude() == 0.0) {
+                        //에뮬레이터로 실행하면 값이 0.0 나옴
+                        point1 = new TMapPoint(37.5817849, 127.01036899999997);
+                    } else {
+                        point1 = tmapgps.getLocation();
+                    }
+
+                    TMapPoint point2 = new TMapPoint(parseDouble(latitude), parseDouble(longitude));
+
+                    car_route_station = "default";
+                    Log.d("car_route_station:", tmapgps.getLocation() + "");
+                    Log.d("car_route_station:", tmapgps.getLocation() + "");
+                    path(point1, point2);
                 }
 
-                TMapPoint point2 = new TMapPoint(parseDouble(latitude), parseDouble(longitude));
+                if (getContext() == null) {
+                    // 보관소별 위경도값 보내기
+                    new TMapGetData((LoginActivity) LoginActivity.mContext).execute();
+                    //보관소별 바이크 정보
+                    new BikeInfoGetData((LoginActivity) LoginActivity.mContext).execute();
 
-                car_route_station="default";
-                Log.d("car_route_station:",tmapgps.getLocation()+"");Log.d("car_route_station:",tmapgps.getLocation()+"");
-                path(point1, point2);
+                    Handler handler = new Handler();
+                    Log.d("1초",getContext()+"");
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            setMarker();
+                            Log.d("1초쉬기", getContext().toString());
+                        }
+                    }, 1000);
+
+                }else{}
+
+
+                // TMapPoint point2 = new TMapPoint(parseDouble(latitude), parseDouble(longitude));
+
+                // Log.d("포인트2", String.valueOf(point2));
+
+                TMapPoint tMapPoint = new TMapPoint(parseDouble(latitude), parseDouble(longitude)); //gps로 받아온 위도경도 저장하고
+                //보관소마커생성
+                MarkerOverlay marker1 = new MarkerOverlay(getContext(), StorageName, "배터리 잔량");//공기계GPS가 불량이어서
+                //위치값을 잘 못넘기나?
+                //마크오버레이값으로 null값이 찍힌다.
+
+                String strID = StorageName; //보관소 이름으로 마커 아이디지정
+
+                marker1.setID(strID); //마커 아이콘 지정
+
+                marker1.setIcon(BitmapFactory.decodeResource(getResources(), R.drawable.kiwi_marker_small)); //마커이미지
+                marker1.setTMapPoint(tMapPoint); //저장된 위도경도 값으로 마커를 생성
+
+                tMapView.addMarkerItem2(strID, marker1);//지도에 생성한 머커를 추가
+
+                Log.d("i:", i + "");
+                Log.d("Station_name:", StorageName + "");
+
             }
-
-
-
-           // TMapPoint point2 = new TMapPoint(parseDouble(latitude), parseDouble(longitude));
-
-           // Log.d("포인트2", String.valueOf(point2));
-
-            TMapPoint tMapPoint = new TMapPoint(parseDouble(latitude), parseDouble(longitude)); //gps로 받아온 위도경도 저장하고
-                                                                                                //보관소마커생성
-            MarkerOverlay marker1 = new MarkerOverlay(getContext(), StorageName, "배터리 잔량");//공기계GPS가 불량이어서
-                                                                                            //위치값을 잘 못넘기나?
-                                                                                //마크오버레이값으로 null값이 찍힌다.
-
-            String strID = StorageName; //보관소 이름으로 마커 아이디지정
-
-            marker1.setID(strID); //마커 아이콘 지정
-
-            marker1.setIcon(BitmapFactory.decodeResource(getResources(), R.drawable.kiwi_marker_small)); //마커이미지
-            marker1.setTMapPoint(tMapPoint); //저장된 위도경도 값으로 마커를 생성
-
-            tMapView.addMarkerItem2(strID, marker1);//지도에 생성한 머커를 추가
-
-            Log.d("i:", i + "");
-            Log.d("Station_name:", StorageName + "");
-
         }
 
 
@@ -427,6 +449,7 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
 //    }
 
 
+
      final LocationListener mListener = new LocationListener() {
         public void onLocationChanged(Location location) {
 
@@ -486,4 +509,4 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
     }
 
 
-}
+

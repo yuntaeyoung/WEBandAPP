@@ -1,5 +1,6 @@
 package com.hansung.android.kiwi;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,10 +29,18 @@ import java.util.HashMap;
 import static com.hansung.android.kiwi.NaviActivity.car_route_num;
 import static com.hansung.android.kiwi.MainActivity.Table_num;
 
+import static com.hansung.android.kiwi.LoginActivity.l_email;
+
 public class BikeInfoActivity extends AppCompatActivity {
+    final static String TAG = "BikeInfoActivity";
 
     private GridView gridView;
+    private ListView listView;
+    static Context mContext = null;
+
+
     TextView station_name, route;
+
 
     TempOfKiwi tempofKiwi;
 
@@ -41,6 +51,11 @@ public class BikeInfoActivity extends AppCompatActivity {
 
     private static final String TAG_BatteryLevel = "Battery";
     private static final String TAG_Reservation = "Reserve";
+
+    public String BikesName;
+    public String Battery;
+    public String Reserve;
+    public String BikesUid;
 
     public String uid = null;
 
@@ -63,17 +78,29 @@ public class BikeInfoActivity extends AppCompatActivity {
 
         gridView = findViewById(R.id.gridView);
 
+        //listView = findViewById(R.id.list_bike);
+
         GetInfo(station);
         //cardEvent(gridLayout);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                String a = String.valueOf(position);
-                //Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
-            }
-        });
+//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+//        {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+//            {
+//                String a = String.valueOf(position);
+//                //Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String b = String.valueOf(position);
+//                Toast.makeText(getApplicationContext(), b, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+
 
         route=findViewById(R.id.route);
         route.setOnClickListener(new View.OnClickListener() {
@@ -132,35 +159,40 @@ public class BikeInfoActivity extends AppCompatActivity {
         mArrayList = new ArrayList<>();
         uid = station;
         Log.d("바이크인포uid=station",uid);
-        String BikesName;
-        String Battery;
-        String Reserve;
+
 
         //특정 보관소를 누르면 해당 보관소에 대한 퀵보드 정보를 가져오기
+        int k = 0;
         for (int j = 0; j < tempofKiwi.getBikeStorages().size(); j++) {
             if (uid.equals(tempofKiwi.getBikeStorages().get(j).getStorageName())) {
                 Log.d("uid == 겟바이크스토레지?", tempofKiwi.getBikeStorages().get(j).getStorageName());
-                String BikesUid = tempofKiwi.getBikeStorages().get(j).getId();
+                BikesUid = tempofKiwi.getBikeStorages().get(j).getId();
                 Log.d("BikesUid",BikesUid);
                 for(int i = 0; i < tempofKiwi.getBikes().size(); i++) {
+
                     if(tempofKiwi.getBikes().get(i).getId().equals(BikesUid)) {
                         Log.d("해당하는uid만", tempofKiwi.getBikes().get(i).getId());
+
 
 
                         uid = tempofKiwi.getBikes().get(i).getId();
                         BikesName = tempofKiwi.getBikes().get(i).getBikeName();
                         Battery = tempofKiwi.getBikes().get(i).getBattery();
                         Reserve = tempofKiwi.getBikes().get(i).getReserve();
+                        BikesUid = tempofKiwi.getBikes().get(i).getId();
+                     //   String PushBike = tempofKiwi.getBikes().get(i)
 
                         Log.d("번째 보관소", uid);
                         Log.d("0번째 바이크", BikesName);
-                        Log.d("바이크 배터리량", Battery);
+                        Log.d("바이크id",BikesUid);
                         Log.d("예약가능유무", Reserve);
 
                         //배터리 정보를 HasMap에 저장
                        HashMap<String, String> hashMap = new HashMap<>();
-                       hashMap_id.put(String.valueOf(j), uid);
-                        Log.d("String.valueOf(j)",String.valueOf(j));
+                       hashMap_id.put(k+"", BikesName);
+                       k++;
+                       Log.d("kkkk", k+"");
+                        Log.d("String.value",String.valueOf(k+1));
                         Log.d("유아이디",uid);
                         hashMap.put(TAG_BatteryLevel, Battery + "%");
 
@@ -174,11 +206,16 @@ public class BikeInfoActivity extends AppCompatActivity {
                         Log.v("Test2", hashMap.toString());
                         //HasMap에 저장한 정보를 배터리 정보 배열에 저
                         mArrayList.add(hashMap);
-                        Log.d("에드해쉬맵", String.valueOf(hashMap));
+                        Log.d("에드해쉬맵", String.valueOf(mArrayList));
                     }
                 }
             }
         }
+     //   Log.d("해쉬맵 벨류값",hashMap_id.get(0+""));
+     //   Log.d("해쉬맵 벨류값",hashMap_id.get(1+""));
+       // Log.d("해쉬맵 벨류값",hashMap_id.get(2+""));
+       //Log.d("해쉬맵 벨류값",hashMap_id.get(3+""));
+
 
         ListAdapter adapter = new SimpleAdapter(
                 BikeInfoActivity.this, mArrayList, R.layout.list_batt,
@@ -188,6 +225,10 @@ public class BikeInfoActivity extends AppCompatActivity {
 
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(mItemClickListener);
+
+//        listView.setAdapter(adapter);
+//        listView.setOnItemClickListener(mItemClickListener);
+
         Log.d("엠아이템클릭리스너", String.valueOf(mItemClickListener));
     }
 
@@ -197,16 +238,30 @@ public class BikeInfoActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long l_position) {
-            Log.d("온아이템클릭리스너position", String.valueOf(position));
-            Log.d("온아이템클릭리스너l_position", String.valueOf(l_position));
+            Log.d("온아이템클릭리스너position", String.valueOf(position)); //해당보관소의 바이크uid(0~
+            Log.d("온아이템클릭리스너l_position", String.valueOf(l_position));//
 
             // Position 은 클릭한 Row의 position 을 반환해 준다.
-            String po=position+"";
+            String po = position+"";
+
+//            Log.d("리스너 안",hashMap_id.get(1+""));
+//            Log.d("리스너 안",hashMap_id.get(2+""));
+//            Log.d("리스너 안",hashMap_id.get(3+""));
+//            Log.d("리스너 안",hashMap_id.get(4+""));
+
+
+
+
+           // hashMap_id.get(po);
             //Toast.makeText(getApplicationContext(), po, Toast.LENGTH_SHORT).show();
             Log.d("예약하려고바이크누름",po);
             //Toast.makeText(getApplicationContext(), "값: "+hashMap_id.get(po), Toast.LENGTH_SHORT).show();
+            Log.d("show 전",String.valueOf(hashMap_id.get(po)));
             show(hashMap_id.get(po)); //show 호출
             Log.d("해쉬맵_아이디",hashMap_id.get(po));
+
+
+
         }
     };
 
@@ -239,36 +294,28 @@ public class BikeInfoActivity extends AppCompatActivity {
     private void reservation(String st){
         String uid=st;
         Log.d("reservation st값", st);
-        Toast.makeText(getApplicationContext(),uid,Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),uid+"이 예약되었습니다.",Toast.LENGTH_LONG).show();
 
-        //해당 email이 예약한 바이크와 함께 저장되도록
-        //서버에 예약한 바이크 uid를 통해 해당 바이크의 예약정보를 예약불가로 변경
-//
-//        Call<info> call=apiService.BattReservation(uid);
-//        call.enqueue(new retrofit2.Callback<info>() {
-//            @Override
-//            public void onResponse(Call<info> call, retrofit2.Response<info> response) {
-//                Log.e("response",response.body().getResponse());
-//                if(response.body().getResponse().equals("ok")){
-//                    Log.e("register","Ok");
-//                    Toast.makeText(getApplicationContext(), "예약 완료", Toast.LENGTH_SHORT).show();
-//                    GetInfo(station);
-//                }else if(response.body().getResponse().equals("failed")){
-//                    Log.e("Reservation","Failed");
-//                    Toast.makeText(getApplicationContext(), "예약 실패", Toast.LENGTH_SHORT).show();
-//
-//                }else if(response.body().getResponse().equals("error")){
-//                    Log.e("register","Error");
-//               }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<info> call, Throwable t) {
-//                Log.e("register","onFailure");
-//            }
-//        });
+       //  해당 email이 예약한 바이크와 함께 저장되도록
+       // 서버에 예약한 바이크 uid를 통해 해당 바이크의 예약정보를 예약불가로 변경
+        email=l_email.getText().toString(); //예약자 이메일
+        Log.d("에약자 이메일", email);
+       // String Bikename =l_password.getText().toString();  //바이크이름
 
+        JSONObject postDataParam = new JSONObject();
+        try {
+            postDataParam.put("email", email);
+            postDataParam.put("name", uid);
+
+            new BikeInfoInsertData(BikeInfoActivity.this).execute(postDataParam);
+
+            new BikeInfoGetData((BikeInfoActivity) BikeInfoActivity.mContext).execute();
+
+        } catch (JSONException e) {
+            Log.e(TAG, "JSONEXception");
+        }
 
     }
+
 }
 

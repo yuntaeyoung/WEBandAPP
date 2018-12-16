@@ -58,6 +58,8 @@ public class NaviActivity extends AppCompatActivity
     public static String car_route_station = "default";
     public static int car_route_num = 0;
 
+    public static String BuyTicket = "false";
+
     public String UserEmail;
     public String Name;
     public String key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9wr8OyrUXB57xekazfrv/" +
@@ -204,10 +206,14 @@ public class NaviActivity extends AppCompatActivity
 //            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 //            ft.replace(R.id.NavFrag, new HistoryFragment());
 //            ft.commit();
-
-            Intent intent = new Intent(NaviActivity.this, QrActivity.class);
-            startActivity(intent);
-            //finish();
+            if(BuyTicket == "Ture") {
+                Intent intent = new Intent(NaviActivity.this, QrActivity.class);
+                startActivity(intent);
+                //finish();
+            }else{
+                String errorMessage = getString(R.string.purchase_error) + " (" + "구매를 하셔야 잠금해제를 할 수 있습니다." + ")";
+                Toast.makeText(this, "티켓을 구매해주세요!", Toast.LENGTH_LONG).show();
+            }
 
         } else if (id == R.id.nav_manage) { // 가입자 개인정보
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -300,7 +306,6 @@ public class NaviActivity extends AppCompatActivity
         bp.purchase(this, productId);
         Log.d("purchase", String.valueOf(bp.purchase(this,productId))); //최종구매누르면 나옴 지금은 *오류 요청하신 항목은 구매할 수 없습니다.
 
-
     }
 
 
@@ -314,6 +319,9 @@ public class NaviActivity extends AppCompatActivity
         Log.d("onProductPurchased",productId);
         SkuDetails sku = bp.getPurchaseListingDetails(productId);
         Log.d("스쿠값",sku.toString());
+
+        BuyTicket = "Ture"; //구매를 하면 Ture 로 바꿔줌
+
         // 하트 100개 구매에 성공하였습니다! 메세지 띄우기
         String purchaseMessage = sku.title + getString(R.string.purchase_succeed);
         //  Common.showMessage(this, getCurrentFocus(), purchaseMessage);
