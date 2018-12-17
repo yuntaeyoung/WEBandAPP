@@ -3,16 +3,17 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-adminlocations',
-  templateUrl: './adminlocations.component.html',
-  styleUrls: ['./adminlocations.component.css']
+	selector: 'app-adminlocations',
+	templateUrl: './adminlocations.component.html',
+	styleUrls: ['./adminlocations.component.css']
 })
 
 export class AdminlocationsComponent implements OnInit {
-  bikestorage: Object;
+	bikestorage: Object;
 	bike: Object;
+	gps: Object;
 
-	n={
+	n = {
 		_id: String,
 		uid: String,
 		latitude: String,
@@ -20,34 +21,58 @@ export class AdminlocationsComponent implements OnInit {
 		Storage_name: "보관소 위치"
 	}
 
-  constructor(
-	private authService: AuthService,
-    private router: Router) { }
+	constructor(
+		private authService: AuthService,
+		private router: Router) { }
 
-  ngOnInit() {
-	this.authService.getBikeStorage().subscribe(storageList => {
-		this.bikestorage = storageList;
-		console.log(this.bikestorage);
-	  }, 
-	  err => {
-		console.log(err);
-		return false;
-	  });
+	ngOnInit() {
 
-	this.authService.getBike().subscribe(bikeList => {
-		this.bike = bikeList;
-		console.log(this.bike);
-	  }, 
-	  err => {
-		console.log(err);
-		return false;
-	  });
-  }
+		if(!this.authService.adminloggedIn())
+			this.router.navigate(['/']);
 
-  // google maps zoom level
-  zoom: number = 14;
+		this.authService.getBikeStorage().subscribe(storageList => {
+			this.bikestorage = storageList;
+			console.log(this.bikestorage);
+		},
+			err => {
+				console.log(err);
+				return false;
+			});
 
-  // initial center position for the map
-  lat: number = 37.582142;
-  lng: number = 127.010369;
+		this.authService.getBike().subscribe(bikeList => {
+			this.bike = bikeList;
+			console.log(this.bike);
+		},
+			err => {
+				console.log(err);
+				return false;
+			});
+
+		this.authService.getGPS().subscribe(gpslist => {
+			this.gps = gpslist;
+			console.log(this.gps);
+		},
+			err => {
+				console.log(err);
+				return false;
+			});
+	}
+
+	refrash(){
+		this.authService.getGPS().subscribe(gpslist => {
+			this.gps = gpslist;
+			console.log(this.gps);
+		},
+			err => {
+				console.log(err);
+				return false;
+			});
+	}
+
+	// google maps zoom level
+	zoom: number = 14;
+
+	// initial center position for the map
+	lat: number = 37.582142;
+	lng: number = 127.010369;
 }

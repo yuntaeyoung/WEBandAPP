@@ -1,8 +1,10 @@
 #bimage {
     display: table;
     width: 100%;
-    height: 531px;
+    height: 390px;
     background-image: url("https://s3.ap-northeast-2.amazonaws.com/elasticbeanstalk-ap-northeast-2-767926874660/KakaoTalk_20181209_222018403.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   
   #content {

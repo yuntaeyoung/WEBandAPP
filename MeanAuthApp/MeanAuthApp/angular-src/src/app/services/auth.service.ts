@@ -12,8 +12,20 @@ export class AuthService {
   user: any;
   admin: any;
   email: any;
+  visible: boolean;
 
-  constructor(private http:Http) { }
+  constructor(private http:Http,
+    ) {
+      this.visible = false;
+     }
+
+  hide() { this.visible = false; }
+
+  show() { this.visible = true; }
+
+  toggle() { this.visible = !this.visible; }
+
+  doSomethingElseUseful() { }
 
   getBikeStorage() {
     let headers = new Headers();
@@ -30,6 +42,15 @@ export class AuthService {
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
     return this.http.get('http://13.125.80.236:3000/Bikes/infor', {headers: headers})
+    .pipe(map(res => res.json()));
+  }
+
+  getGPS() {
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
+    return this.http.get('http://13.125.80.236:3000/users/gpsinfor', {headers: headers})
     .pipe(map(res => res.json()));
   }
 
@@ -51,6 +72,15 @@ export class AuthService {
     .pipe(map(res => res.json()));
   }
 
+  getQnAreply(){
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
+    return this.http.get('http://13.125.80.236:3000/users/reply', {headers: headers})
+    .pipe(map(res => res.json()));
+  }
+
   registerUser(user) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -63,6 +93,14 @@ export class AuthService {
     headers.append('Content-Type', 'application/json');
     console.log(bike);
     return this.http.post('http://13.125.80.236:3000/users/reserve', bike, {headers: headers})
+      .pipe(map(res => res.json()));
+  }
+
+  cancelBike(bike){
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    console.log(bike);
+    return this.http.post('http://13.125.80.236:3000/users/cancel', bike, {headers: headers})
       .pipe(map(res => res.json()));
   }
 
@@ -90,8 +128,12 @@ export class AuthService {
       .pipe(map(res => res.json()));
   }
 
-  getQnAdetail(){
-
+  replyQnA(reply){
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    console.log(reply);
+    return this.http.post('http://13.125.80.236:3000/users/addreply', reply, {headers: headers})
+      .pipe(map(res => res.json()));
   }
 
   authenticateUser(user) {
@@ -163,5 +205,7 @@ export class AuthService {
     this.user = null;
     localStorage.clear();
   }
+
+
 }
  

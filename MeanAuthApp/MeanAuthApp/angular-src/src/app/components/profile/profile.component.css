@@ -27,3 +27,10 @@
   width: 100%;
   display: table;
  }
+
+ #res {
+  background-color: #60da0f;
+  width: 100px;
+  color: #FFFFFF;
+  padding: 0;
+}

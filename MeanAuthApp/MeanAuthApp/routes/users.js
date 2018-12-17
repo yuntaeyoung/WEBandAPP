@@ -151,13 +151,30 @@ router.post('/reserve', function(req, res, next) {
   const email = req.body.email;
   console.log(name);
   console.log(email);
-  Bike.change(name,email,(err, Bike) => {
-    res.json("Success");
+  Bike.change(name,email,(err, user) => {
+	if(err){
+      res.json({success: false, msg:'Failed to register user', err: err})
+    } else {
+      res.json({success: true, msg:'User registered'})
+    }
   });
 });
 
+//bike예약취소
+router.post('/cancel', function(req, res, next) {
 
-//게시판정보보내기
+  const name = req.body.name;
+  console.log(name);
+  Bike.cancel(name,(err, user) => {
+    if(err){
+      res.json({success: false, msg:'Failed', err: err})
+    } else {
+      res.json({success: true, msg:'registered'})
+    }
+  });
+});
+
+//qna보내기
 router.get('/board', (req, res,next) => {
   Board.getBoardAll((err, Board) => {
     res.json(Board);
@@ -184,13 +201,13 @@ router.post('/removeuser', (req, res,next) => {
   });
 });
 
-//게시물 등록
+//qna추가
 router.post('/addBoard', function(req, res, next) {
 
   const newBoard = new Board({
-    title: req.body.title,
-    content: req.body.content,
-    username: req.body.username
+    title: req.body.content,
+    username: req.body.username,
+    content: req.body.title
   });
 
   console.log(newBoard);
@@ -200,7 +217,7 @@ router.post('/addBoard', function(req, res, next) {
       res.json({success: false, msg:'Failed to register user', err: err})
     } else {
       res.json({success: true, msg:'User registered'})
-    }
+	}
   });
 });
 
@@ -223,10 +240,6 @@ router.post('/addreply', function(req, res, next) {
   });
 
   console.log(newreply);
-
-  Reply.removeReply(title, (err, name) => {
-    res.json('success');
-  });
 
   Reply.addReply(newreply, (err, user) => {
     if(err){

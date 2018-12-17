@@ -14,9 +14,11 @@ import { NgFlashMessageService } from 'ng-flash-messages';
 export class LocationsComponent implements OnInit {
 	bikestorage: Object;
 	bike: Object;
+	user: Object;
 
 	name: String;
-	battery: Number;
+  battery: Number;
+  email: String;
 	
 	n={
 		_id: String,
@@ -49,12 +51,21 @@ export class LocationsComponent implements OnInit {
 		return false;
 	  });
 
+	this.authService.getProfile().subscribe(profile => {
+      this.user = profile.user;
+    }, 
+    err => {
+      console.log(err);
+      return false;
+    });
+
   }
 
-  reservation(list){
+  reservation(list,email){
     const sBike = {
       name: list.name,
-      battery: list.battery
+			battery: list.battery,
+			email: email
     }
     console.log(sBike.name);
     console.log(sBike.battery);

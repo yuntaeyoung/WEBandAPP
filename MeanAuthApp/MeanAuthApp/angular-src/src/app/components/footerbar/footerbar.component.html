@@ -1,0 +1,71 @@
+<div class="row" style="background-color: #c7f4bc">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="col-md-6" style="height: 100%">
+    <div class="row" style="width:400px">
+      <div>
+          <ul class="navbar-nav">
+            <li><h5>관련 페이지</h5></li>
+              <li><img src="https://www.li.me/hubfs/Assets/footer-facebook.svg" alt="" style="margin-right: 10px">
+              <img src="https://www.li.me/hubfs/Assets/footer-twitter.svg" alt="" style="margin-right: 10px">
+              <img src="https://www.li.me/hubfs/Assets/footer-instagram.svg" alt="" style="margin-right: 10px">
+              <img src="https://www.li.me/hubfs/Assets/footer-angel.svg" alt="" style="margin-right: 10px"></li>
+          </ul>
+      </div>
+
+    </div>
+  </div>
+  <div class="col">
+    <ul class="navbar-nav justify-content-around">
+      <li *ngIf="!authService.adminloggedIn()" class="nav-item active">
+        <a class="nav-link" id="category" [routerLink]="['/aboutus']">키위소개</a>
+      </li>
+      <li *ngIf="!authService.adminloggedIn()" class="nav-item active">
+        <a class="nav-link" id="category" [routerLink]="['/locations']">대여소위치</a>
+      </li>
+      <li *ngIf="authService.adminloggedIn()" class="nav-item active">
+        <a class="nav-link" id="category" [routerLink]="['/adminuserlist']">유저리스트</a>
+      </li>
+      <li *ngIf="authService.adminloggedIn()" class="nav-item active">
+        <a class="nav-link" id="category" [routerLink]="['/adminlocations']">대여소관리</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" id="category" [routerLink]="['/safety']">사용방법</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" id="category" [routerLink]="['/kiwiaccess']">등록방법</a>
+      </li>
+      <!-- <li class="nav-item active">
+          <a class="nav-link" id="category" [routerLink]="['/qna']" >Help</a>
+      </li> -->
+    </ul>
+  </div>
+  <div class="col">
+    <ul class="navbar-nav">
+      <li *ngIf="authService.loggedIn()" class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" id="category" [routerLink]="['/profile']">사용자정보</a>
+      </li>
+      <li *ngIf="authService.adminloggedIn()" class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" id="category" [routerLink]="['/adminprofile']">관리자정보</a>
+      </li>
+      <li *ngIf="!authService.loggedIn() && !authService.adminloggedIn()" class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" id="category" [routerLink]="['/privacypolicy']">회원가입</a>
+      </li>
+
+      <li *ngIf="!authService.loggedIn() && !authService.adminloggedIn()" class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" id="category" [routerLink]="['/login']">로그인</a>
+      </li>
+      <li *ngIf="authService.loggedIn() || authService.adminloggedIn()" class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" id="category" (click)="onLogoutClick()" href="#">로그아웃</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="category"> </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="category" [routerLink]="['/qna']">고객센터</a>
+      </li>
+    </ul>
+  </div>
+</div>

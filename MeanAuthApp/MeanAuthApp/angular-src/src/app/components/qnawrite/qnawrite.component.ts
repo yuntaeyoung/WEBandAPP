@@ -13,7 +13,6 @@ export class QnawriteComponent implements OnInit {
   title: string;
   content: string;
   username: string;
-  reply: string;
 
   constructor(private authService: AuthService,
     private router: Router,
@@ -34,7 +33,7 @@ export class QnawriteComponent implements OnInit {
     const qna = {
       title: title,
       content: content,
-      username: user.name,
+      username: user.name
     }
 
     console.log(user.name);
@@ -46,10 +45,11 @@ export class QnawriteComponent implements OnInit {
     this.authService.writeQnA(qna).subscribe(data => {
       if(data.success) {
         this.flashMessage.showFlashMessage({
-          messages: ['You are now registered and can login '], 
+          messages: ['Write Success'], 
           type: 'success', 
           timeout:2000
         });
+        this.router.navigate(['/qna']);
       } else {
         this.flashMessage.showFlashMessage(
           {messages: ['Something went wrong'], 

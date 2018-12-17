@@ -1,26 +1,62 @@
-<div *ngIf="QnA">
-    <h2 class="page-header">제목 : {{QnA.title}} </h2>
-    <h6>내용</h6>
-    <p> {{QnA.content}} </p>
-    <p> {{QnA.reply}} </p>
-    <!-- <ul *ngFor="rep of QnA.reply">
-      <li class="list-group-item">{{rep}}</li>
-    </ul> -->
+<div style="text-align:center ; margin: 0; padding:0;">
+<div class="navbar-nav" id="bimage">
+    <div id="content">
+    </div>
+</div>
 </div>
 
-<table class="table">
-  <thead>
-  <tr>
-    <th>Title</th>
-    <th>Username</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tr *ngFor="let list of QnAlist">
-    <th class="tr-group"><div (click)="QnA = list">{{list.title}}</div></th>
-    <th class="tr-group">{{list.username}}</th>
-    <th class="tr-group"><input type="button" value="X" (click)="deleteQnA(list)"></th>
-  </tr>
-</table>
+<div class="container d-flex justify-content-center" style="height:600px; margin-top: 40px">
 
-<a [routerLink]="['/qnawrite']" >Write</a>
+    <div class="container">
+        <div id="title">
+                <h5 style="display:table-cell; vertical-align: middle;"> 목록 </h5>
+              </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>제목</th>
+                <th>이름</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tr *ngFor="let list of QnAlist">
+            <th class="tr-group">
+                <div (click)="QnA = list">{{list.title}}</div>
+            </th>
+            <th class="tr-group">{{list.username}}</th>
+            <th class="tr-group"><input type="button" class="btn btn-dark" value="삭제" (click)="deleteQnA(list)" id="res" *ngIf="authService.adminloggedIn() || list.username == user.name"></th>
+        </tr>
+    </table>
+    <div style="text-align: center">
+    <input type="button" value="질문하기" class="btn btn-info" [routerLink]="['/qnawrite']" style="background-color: #4f963d">
+</div>
+</div>
+
+    <div class="col-lg-6">
+        <div *ngIf="QnA">
+            <h3 style="text-align:center"> {{QnA.title}} </h3>
+            <div class="alert alert-success">
+            <h6><b>질문 내용</b></h6>
+            <p> {{QnA.content}} </p>
+            </div>
+            <div *ngFor="let r of reply">
+                        <div *ngIf="QnA.title == r.title" class="alert alert-info">
+                            <h6><b>답변</b></h6>
+                            <p><span *ngIf="r.reply !=' '"> {{r.reply}} </span></p>
+                        </div>
+            </div>
+            <div *ngIf="authService.adminloggedIn()">
+                <div class="form-group">
+                    <label>답변</label>
+                    <input type="textarea" class="form-control" [(ngModel)]='reply1' name="reply1">
+                </div>
+                <div>
+                    <input type="button" class="btn btn-primary" value="답변 쓰기" (click)="onReplySubmit(QnA.title,reply1)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
