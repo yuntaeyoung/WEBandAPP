@@ -49,8 +49,8 @@
                   <th class="tr-group" *ngIf="n.uid == list.uid">{{list.battery}}%</th>
                   <th class="tr-group" *ngIf="n.uid == list.uid">
                     <span *ngIf="user">
-                        <input *ngIf="list.reserve=='true' && user.email" type="button" class="btn btn-success" value="예약" (click)="error()" id="res">
-                      <input *ngIf="list.reserve=='true' && !user.email" type="button" class="btn btn-success" value="예약" (click)="reservation(list,user.email)" id="res">
+                        
+                      <input *ngIf="list.reserve=='true'" type="button" class="btn btn-success" value="예약" (click)="reservation(list,user.email)" id="res">
                       <span *ngIf="list.reserve=='false'" style="color:red">불가</span></span></th>
                 </tr>
               </tbody>
