@@ -1,5 +1,6 @@
 package com.hansung.android.kiwi;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import com.anjlab.android.iab.v3.BillingProcessor;
 import com.hansung.android.kiwi.PurchaseHeartsAdapter;
 
 import static com.hansung.android.kiwi.NaviActivity.products;
+import static com.hansung.android.kiwi.NaviActivity.BuyTicket;
 
 
 
@@ -38,6 +40,8 @@ public class WalletFragment extends Fragment {
     private Spinner spFilter;
     private Button btnPurchaseHeart;
 
+    private Button btn_return;
+
     public static MaterialDialog purchaseDialog;
 
     private ArrayAdapter<String> filterAdapter;
@@ -46,7 +50,6 @@ public class WalletFragment extends Fragment {
     private PurchaseHeartsAdapter skusAdapter;
 
     //public BillingProcessor bp;
-
 
 
     TempOfKiwi tempOfKiwi;
@@ -104,6 +107,20 @@ public class WalletFragment extends Fragment {
 
             }
         });
+
+        btn_return = view.findViewById(R.id.btn_return);//반납하기버튼
+        btn_return.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public  void onClick(View view){
+
+                BuyTicket = "false";
+                Log.d("반납 됬으면 변수 변경",BuyTicket);
+                Activity WalletToActivity = getActivity(); //이 클래스가 프레그먼트이기 때문에 액티비티 정보를 얻는다.
+                Toast.makeText(WalletToActivity, "반납이 완료되었습니다!", Toast.LENGTH_LONG).show();
+
+            }
+        });
+
 
         skusAdapter.update(products);
     }

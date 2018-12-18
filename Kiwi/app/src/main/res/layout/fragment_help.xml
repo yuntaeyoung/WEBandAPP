@@ -32,11 +32,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Service"
-                    android:textSize="12sp"
+                    android:text="회사명: 주식회사 키위"
+                    android:textSize="16sp"
                     android:layout_marginTop="18dp"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@color/title"/>
+                    android:textColor="@color/info"/>
 
                 <View
                     android:layout_width="340dp"
@@ -48,9 +48,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Help"
+                    android:text="대표자: 장형필"
                     android:textSize="16sp"
-                    android:textColor="#000000"
+                    android:textColor="@color/info"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="8dp"/>
 
@@ -64,9 +64,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Notice"
+                    android:text="개인정보관리자책임자: 김종호"
                     android:textSize="16sp"
-                    android:textColor="#000000"
+                    android:textColor="@color/info"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="8dp"/>
 
@@ -80,9 +80,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Question"
+                    android:text="서비스운영책임자: 윤태영"
                     android:textSize="16sp"
-                    android:textColor="#000000"
+                    android:textColor="@color/info"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="8dp"/>
 
@@ -96,11 +96,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Terms and Policy"
-                    android:textSize="12sp"
-                    android:layout_marginTop="28dp"
+                    android:text="사업자등록번호: 317-86-00123"
+                    android:textSize="16sp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@color/title"/>
+                    android:textColor="@color/info"/>
 
                 <View
                     android:layout_width="340dp"
@@ -112,25 +112,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Terms of Use"
+                    android:text="통신판매업신고: 제2018-서울성북-01733호"
                     android:textSize="16sp"
-                    android:textColor="#000000"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="8dp"/>
-
-                <View
-                    android:layout_width="340dp"
-                    android:layout_height="2dp"
-                    android:background="@color/title"
-                    android:layout_marginTop="12dp"
-                    android:layout_gravity="center_horizontal"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Privacy policy"
-                    android:textSize="16sp"
-                    android:textColor="#000000"
+                    android:textColor="@color/info"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="8dp"/>
 
@@ -144,9 +128,25 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Operational policy"
+                    android:text="주소:서울시 성북구 삼선교로16길 116 연구관910"
                     android:textSize="16sp"
-                    android:textColor="#000000"
+                    android:textColor="@color/info"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp"/>
+
+                <View
+                    android:layout_width="340dp"
+                    android:layout_height="2dp"
+                    android:background="@color/title"
+                    android:layout_marginTop="12dp"
+                    android:layout_gravity="center_horizontal"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전화: 010-3807-0607"
+                    android:textSize="16sp"
+                    android:textColor="@color/info"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="8dp"/>
 
