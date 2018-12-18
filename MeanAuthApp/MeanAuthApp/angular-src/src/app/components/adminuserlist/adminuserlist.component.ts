@@ -21,6 +21,9 @@ export class AdminuserlistComponent implements OnInit {
    }
 
   ngOnInit() {
+    if(!this.authService.adminloggedIn())
+			this.router.navigate(['/']);
+
     this.authService.getUserlist().subscribe(userlist => {
       this.userlist = userlist;
       console.log(this.userlist);
@@ -47,7 +50,14 @@ export class AdminuserlistComponent implements OnInit {
           timeout:2000
         });
 
-        window.location.reload();
+        this.authService.getUserlist().subscribe(userlist => {
+          this.userlist = userlist;
+          console.log(this.userlist);
+          }, 
+          err => {
+          console.log(err);
+          return false;
+          });
       
     })
   }

@@ -19,6 +19,8 @@ export class LoginComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    this.authService.show();
+    this.authService.doSomethingElseUseful();
   }
 
   onLoginSubmit() {

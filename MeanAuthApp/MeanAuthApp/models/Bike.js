@@ -19,6 +19,10 @@ const BikeSchema = mongoose.Schema({
   reserve: {
     type: String,
     required: true
+  },
+  email : {
+    type: String,
+    required: true
   }
 });
 
@@ -30,7 +34,12 @@ module.exports.getBikeAll = function(callback){
 }
 
 
-module.exports.change = function(name, callback){
+module.exports.change = function(name,email,callback){
   const query = {name: name}
-  Bikes.updateOne(query,{$set:{reserve:"false", email: email}},callback);
+  Bikes.update(query,{$set:{reserve:"false", email: email}},callback);
+}
+
+module.exports.cancel = function(name,callback){
+  const query = {name: name}
+  Bikes.update(query,{$set:{reserve:"true", email:" "}},callback);
 }

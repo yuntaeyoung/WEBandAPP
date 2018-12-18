@@ -39,3 +39,10 @@
  width: 100%;
  display: table;
 }
+
+#w_button {
+  background-color: #60da0f;
+  width: 150px;
+  color: #FFFFFF;
+  padding: 0;
+}

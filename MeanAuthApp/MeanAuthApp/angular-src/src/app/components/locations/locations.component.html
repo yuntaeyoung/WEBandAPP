@@ -1,59 +1,63 @@
-<div class="navbar-nav navbar-left" id="bimage">
+<body>
+  <div class="navbar-nav navbar-left" id="bimage">
     <div id="content">
-         <h2>대여소 위치</h2>
-    </div> 
-</div>
-<div>
-<div  class="text-center" style="background-color:ghostwhite; height: 300px; margin-bottom: 2%; padding-bottom: 0; display: table">
- <div style="display:table-cell; vertical-align: middle; width: 1920px"><h3>   </h3>
- <h6 style="text-align:center; color:#60da0f;">Locations</h6>
- <h2>전동 킥보드 대여소 위치</h2>
- <p class="maxwidth700">현재 내 주변에 있는 전동 킥보드 대여소 위치를 찾아보세요!</p>
- <p class="maxwidth700">도착 전 미리 예약할 수 있습니다.</p>
-</div>
-</div>
-
-<div class="container">
-<div class="row">
-  <div class="col-8">
-    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
-      <agm-marker 
-        iconUrl="https://s3.ap-northeast-2.amazonaws.com/elasticbeanstalk-ap-northeast-2-767926874660/KakaoTalk_20181129_172618464.png"
-        *ngFor="let m of bikestorage"
-        [latitude]="m.latitude"
-        [longitude]="m.longitude"
-        [markerDraggable]="false">
-
-        <agm-info-window>   
-        <p>{{m.Storage_name}}</p>
-        <input type="button" value="대여소 자세히 보기" (click)="n = m">
-        </agm-info-window>
-      </agm-marker>
-    </agm-map>
+      <h2>대여소 위치</h2>
+    </div>
   </div>
-    <div class="col-4" >
-      <div id="title">
-          <h5 style="display:table-cell; vertical-align: middle;"> {{n.Storage_name}} </h5>
-      </div>
-        
-      <div id="d_right">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Battery</th>
-                    <th>예약</th>
-                  </tr>        
-            </thead>
-            <tbody>
-                <tr *ngFor="let list of bike" >
-                    <th class="tr-group" *ngIf="n.uid == list.uid">{{list.name}}</th>
-                    <th class="tr-group" *ngIf="n.uid == list.uid">{{list.battery}}%</th>
-                    <th class="tr-group" *ngIf="n.uid == list.uid"><input *ngIf="list.reserve=='true'" type="button" value="예약" (click)="reservation(list)"></th>
-                </tr>
-            </tbody>
-        </table>
+  <div>
+    <div class="text-center" style="background-color:ghostwhite; height: 300px; margin-bottom: 2%; padding-bottom: 0; display: table">
+      <div style="display:table-cell; vertical-align: middle; width: 1920px">
+        <h3> </h3>
+        <h6 style="text-align:center; color:#60da0f;">Locations</h6>
+        <h2>전동 킥보드 대여소 위치</h2>
+        <p class="maxwidth700" style="margin-bottom: 0">현재 내 주변에 있는 전동 킥보드 대여소 위치를 찾아보세요!</p>
+        <p class="maxwidth700">도착 전 미리 <b>예약</b>할 수 있습니다.</p>
       </div>
     </div>
-</div>
-</div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-8">
+          <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+            <agm-marker iconUrl="https://s3.ap-northeast-2.amazonaws.com/elasticbeanstalk-ap-northeast-2-767926874660/KakaoTalk_20181129_172618464.png"
+              *ngFor="let m of bikestorage" [latitude]="m.latitude" [longitude]="m.longitude" [markerDraggable]="false">
+
+              <agm-info-window style="text-align: center">
+                <h6>{{m.Storage_name}}</h6>
+                <input type="button" class="btn btn-success" value="대여소 자세히 보기" (click)="n = m" id="w_button">
+              </agm-info-window>
+            </agm-marker>
+          </agm-map>
+        </div>
+        <div class="col-4">
+          <div id="title">
+            <h5 style="display:table-cell; vertical-align: middle;"> {{n.Storage_name}} </h5>
+          </div>
+
+          <div id="d_right">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Battery</th>
+                  <th>예약</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let list of bike">
+                  <th class="tr-group" *ngIf="n.uid == list.uid">{{list.name}}</th>
+                  <th class="tr-group" *ngIf="n.uid == list.uid">{{list.battery}}%</th>
+                  <th class="tr-group" *ngIf="n.uid == list.uid">
+                    <span *ngIf="user">
+                        <input *ngIf="list.reserve=='true' && user.email" type="button" class="btn btn-success" value="예약" (click)="error()" id="res">
+                      <input *ngIf="list.reserve=='true' && !user.email" type="button" class="btn btn-success" value="예약" (click)="reservation(list,user.email)" id="res">
+                      <span *ngIf="list.reserve=='false'" style="color:red">불가</span></span></th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

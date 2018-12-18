@@ -18,6 +18,8 @@ export class AdminloginComponent implements OnInit {
     private flashMessage: NgFlashMessageService) { }
 
   ngOnInit() {
+    this.authService.show();
+    this.authService.doSomethingElseUseful();
   }
 
   onLoginSubmit() {
