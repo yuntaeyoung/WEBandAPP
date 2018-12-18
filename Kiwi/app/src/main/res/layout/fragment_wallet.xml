@@ -3,29 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity=""
+    android:orientation="vertical"
     tools:context=".WalletFragment">
 
     <!-- TODO: Update blank fragment layout -->
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity=""
-        android:src="@drawable/bike" />
-
-    <Button
-        android:id="@+id/btn_purchase_heart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|top"
-        android:layout_marginBottom="20dp"
-        android:text="티켓 구매"
-        android:textSize="40sp" />
-
-</LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -33,8 +15,44 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity=""
 
+            android:src="@drawable/bike" />
+
+        <Button
+            android:id="@+id/btn_purchase_heart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/edit_back"
+            android:textColor="@android:color/holo_green_light"
+            android:text="티켓 구매"
+            android:textSize="40sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="390dp"
+            android:layout_gravity="center|bottom"
             android:src="@drawable/kiwi_wallet" />
+
+        <Button
+            android:id="@+id/btn_return"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/edit_back"
+            android:text="스쿠터 반납"
+            android:textColor="@android:color/holo_green_light"
+            android:textSize="20sp" />
 
 
     </LinearLayout>

@@ -212,7 +212,7 @@ public class NaviActivity extends AppCompatActivity
                 //finish();
             }else{
                 String errorMessage = getString(R.string.purchase_error) + " (" + "구매를 하셔야 잠금해제를 할 수 있습니다." + ")";
-                Toast.makeText(this, "티켓을 구매해주세요!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "이용권을 구매해주세요!", Toast.LENGTH_LONG).show();
             }
 
         } else if (id == R.id.nav_manage) { // 가입자 개인정보
@@ -304,6 +304,7 @@ public class NaviActivity extends AppCompatActivity
             Log.d("컨슈머퍼체이스", String.valueOf(bp.consumePurchase(productId)));
             }
         bp.purchase(this, productId);
+        BuyTicket = "Ture"; //구매를 하면 Ture 로 바꿔줌
         Log.d("purchase", String.valueOf(bp.purchase(this,productId))); //최종구매누르면 나옴 지금은 *오류 요청하신 항목은 구매할 수 없습니다.
 
     }
@@ -315,7 +316,7 @@ public class NaviActivity extends AppCompatActivity
 
     @Override
     public void onProductPurchased(@NonNull String productId, @Nullable TransactionDetails details) {
-// 구매한 아이템 정보
+// 구매가 성공되면 호출
         Log.d("onProductPurchased",productId);
         SkuDetails sku = bp.getPurchaseListingDetails(productId);
         Log.d("스쿠값",sku.toString());
@@ -329,7 +330,7 @@ public class NaviActivity extends AppCompatActivity
         // 구매 처리
         int amount = 0;
         try {
-            // 사용자의 하트 100개를 추가
+
             amount = Integer.parseInt(productId.substring(1));
             // userStore.purchaseHearts(amount, tvNavigationHearts);
         } catch (Exception e) {

@@ -24,6 +24,7 @@
     <color name="bottom">#002700</color>
 
     <color name="title">@android:color/holo_green_light</color>
+    <color name="info">#ff32A800</color>
     <!--
     #85DB18
     #CDE855

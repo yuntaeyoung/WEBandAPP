@@ -44,6 +44,8 @@ import static com.hansung.android.kiwi.TMapGetData.TAG_StorageName;
 import static java.lang.Double.parseDouble;
 import static com.hansung.android.kiwi.NaviActivity.car_route_station;
 import static com.hansung.android.kiwi.MainActivity.Table_num;
+import static com.hansung.android.kiwi.MarkerOverlay.mContext;
+import static com.hansung.android.kiwi.MarkerOverlay.copyContext;
 
 
 public class TMapFragment extends Fragment { //마커 이미지
@@ -120,6 +122,7 @@ public class TMapFragment extends Fragment { //마커 이미지
 
         tMapView.setIconVisibility(true);//현재위치로 표시될 아이콘을 표시할지 여부를 설정합니다.
         setGps(); //GPS를 설정
+       // setMarker();
 
 
         /*
@@ -167,7 +170,7 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
 
 */
 
-        //setMarker();
+     //   setMarker();
 
         //마커 클릭시 화면에 표시되는 풍션뷰를 클릭했을 때의 이벤트 처리
         tMapView.setOnMarkerClickEvent(new TMapView.OnCalloutMarker2ClickCallback() {
@@ -339,10 +342,19 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
                 }
 
                 if (getContext() == null) {
+
+                    //getContext(). = copyContext;
                     // 보관소별 위경도값 보내기
                     new TMapGetData((LoginActivity) LoginActivity.mContext).execute();
                     //보관소별 바이크 정보
                     new BikeInfoGetData((LoginActivity) LoginActivity.mContext).execute();
+
+//                    Intent intent = new Intent(TMapFragment.this, LoginActivity.class);
+//                    //Intent intent = new Intent(LoadingActivity.this, NaviActivity.class);
+//                    startActivity(intent);
+//                    finish();
+
+
 
                     Handler handler = new Handler();
                     Log.d("1초",getContext()+"");
@@ -352,7 +364,7 @@ tMapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonC
                             setMarker();
                             Log.d("1초쉬기", getContext().toString());
                         }
-                    }, 1000);
+                    }, 2000);
 
                 }else{}
 
